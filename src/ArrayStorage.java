@@ -4,21 +4,21 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
-    private int countResume = 0;
+    private final Resume[] storage = new Resume[10000];
+    private int countResumes;
 
     public void clear() {
-        Arrays.fill(storage, 0, countResume, null);
-        countResume = 0;
+        Arrays.fill(storage, 0, countResumes, null);
+        countResumes = 0;
     }
 
     public void save(Resume r) {
-        storage[countResume] = r;
-        countResume++;
+        storage[countResumes] = r;
+        countResumes++;
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < countResume; i++) {
+        for (int i = 0; i < countResumes; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return storage[i];
             }
@@ -27,15 +27,13 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < countResume; i++) {
+        for (int i = 0; i < countResumes; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                System.out.println("\nРезюме " + storage[i] + " удалено");
-                System.arraycopy(storage, i + 1, storage, i, countResume - 1 - i);
-                countResume--;
-                storage[countResume] = null;
+                countResumes--;
+                storage[i] = storage[countResumes];
+                storage[countResumes] = null;
                 return;
             }
-            System.out.println("Нет такого резюме");
         }
     }
 
@@ -43,10 +41,10 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        return Arrays.copyOf(storage, countResume);
+        return Arrays.copyOf(storage, countResumes);
     }
 
     public int size() {
-        return countResume;
+        return countResumes;
     }
 }
